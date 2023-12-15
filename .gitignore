@@ -1,0 +1,60 @@
+.env
+__pycache__/
+.idea
+venv/
+test.py
+.python-version
+.tox
+
+# Garbage
+**/*/__pycache__
+**/.vscode
+**/__pycache__
+*.egg-info
+
+# Data
+.data
+resources/preprocessed
+
+# PyTest
+.pytest_cache
+.mypy_cache
+.coverage
+.coverage 2
+.coverage.*
+coverage.*
+.testmon*
+pytest_artifacts
+pytest-results.xml
+
+# Google
+.gdrive
+
+# Builds and temporary files
+build
+builds
+dist
+tmp/
+
+# Personal
+notes.txt
+.env
+
+# Checkpoints and logs
+.checkpoints
+lightning_logs*
+logs
+.lr_find_*
+mlruns
+
+# Hydra
+outputs
+
+# Sandbox
+.ipynb_checkpoints
+notebooks/sandbox.ipynb
+notebooks/sandbox
+notebooks/.ipynb_checkpoints/
+notebooks/checkpoints/
+sandbox
+ipython_log.py
