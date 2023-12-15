@@ -22,6 +22,7 @@ __all__ = [
     "calculate_entropy_l_diversityGPT",
 ]
 
+from loguru import logger
 import typing as ty
 import pandas as pd
 import random
@@ -63,7 +64,7 @@ def calculate_pointwise_marginal(x: pd.Series, value: float) -> float:
     # Total number of records
     total_records = len(x)
     # Calculate the probability
-    probability_y = count_y_value / total_records
+    probability_y: float = float(count_y_value / total_records)
     return probability_y
 
 
@@ -83,7 +84,7 @@ def calculate_joint_entropy(column1: pd.Series, column2: pd.Series) -> float:
 
 
 def calculate_conditional_entropy(X: pd.Series, Y: pd.Series) -> float:
-    """H(X|Y)= H(X,Y) - H(Y)
+    """H(X|Y) = H(X,Y) - H(Y)
 
     Args:
         X (pd.Series): _description_
@@ -123,8 +124,13 @@ def calculate_conditional_entropyWithMarginal(column1: pd.Series, column2: pd.Se
 
 
 # H(X|Y=y_value)
-def calculate_pointwise_conditional_entropy(X: pd.Series, Y: pd.Series, value: float) -> float:
-    """H(X|Y=y_value)
+def calculate_pointwise_conditional_entropy(
+    X: pd.Series,
+    Y: pd.Series,
+    value: float,
+    direct: bool = False,
+) -> float:
+    """H(X|Y=y)
 
     Args:
         X (pd.Series): _description_
@@ -134,10 +140,15 @@ def calculate_pointwise_conditional_entropy(X: pd.Series, Y: pd.Series, value: f
     Returns:
         float: _description_
     """
-    # Filtering X for the specific value
-    filtered_Y = Y[Y == value]
-    # Calculate conditional entropy of Y given this filtered version of X
-    return calculate_conditional_entropy(X, filtered_Y)
+    # Filtering Y for the specific value
+    idx = Y == value
+    filtered_Y = Y[idx]
+    # Calculate conditional entropy of X given this filtered version of Y
+    if direct:
+        H_X_Y = calculate_entropy(X[idx])
+    else:
+        H_X_Y = calculate_conditional_entropy(X, filtered_Y)
+    return H_X_Y
 
 
 # I(X;Y) = h(X) - h(X|Y) = H(X) + H(Y)  -H(X,Y)
@@ -263,7 +274,7 @@ def maximum_information_leakageGPT(X: pd.Series, Y: pd.Series) -> float:
     return max_info_leakage
 
 
-def calculate_ITPR(X: pd.Series, Y: pd.Series, tol: float = 1e-12) -> float:
+def calculate_ITPR(X: pd.Series, Y: pd.Series, direct: bool = False, tol: float = 1e-12) -> float:
     """ITPR.
 
     Args:
@@ -273,16 +284,21 @@ def calculate_ITPR(X: pd.Series, Y: pd.Series, tol: float = 1e-12) -> float:
     Returns:
         float: _description_
     """
-    omega_Y_size = len(Y.unique())
+    y_values = Y.unique()
+    omega_Y_size = len(y_values)
+    logger.trace(f"({omega_Y_size}) y_values={y_values}")
     # H(X))
     H_X = calculate_entropy(X) + tol
+    logger.trace(f"H(X)={H_X}")
     # ITPR(Y) over X
     max_itpr_value = 0.0
-    for y_value in Y.unique():
+    for y_value in y_values:
         probability_y = calculate_pointwise_marginal(Y, y_value)
-        weighted_conditional_entropy = (
-            omega_Y_size * probability_y * calculate_pointwise_conditional_entropy(X, Y, y_value)
-        )
+        logger.trace(f"probability_y={probability_y}")
+        H_X_Y = calculate_pointwise_conditional_entropy(X, Y, y_value, direct=direct)
+        logger.trace(f"H(X|Y)={H_X_Y}")
+        weighted_conditional_entropy = omega_Y_size * probability_y * H_X_Y
+        logger.trace(f"weighted_conditional_entropy={weighted_conditional_entropy}")
         itpr_value = 1 - (weighted_conditional_entropy / H_X)
         max_itpr_value = max(max_itpr_value, itpr_value)
 
