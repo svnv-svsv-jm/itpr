@@ -274,7 +274,7 @@ def maximum_information_leakageGPT(X: pd.Series, Y: pd.Series) -> float:
     return max_info_leakage
 
 
-def calculate_ITPR(X: pd.Series, Y: pd.Series, direct: bool = False, tol: float = 1e-12) -> float:
+def calculate_ITPR(X: pd.Series, Y: pd.Series, direct: bool = True, tol: float = 1e-12) -> float:
     """ITPR.
 
     Args:
