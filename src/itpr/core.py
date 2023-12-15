@@ -263,7 +263,7 @@ def maximum_information_leakageGPT(X: pd.Series, Y: pd.Series) -> float:
     return max_info_leakage
 
 
-def calculate_ITPR(X: pd.Series, Y: pd.Series) -> float:
+def calculate_ITPR(X: pd.Series, Y: pd.Series, tol: float = 1e-12) -> float:
     """ITPR.
 
     Args:
@@ -275,7 +275,7 @@ def calculate_ITPR(X: pd.Series, Y: pd.Series) -> float:
     """
     omega_Y_size = len(Y.unique())
     # H(X))
-    H_X = calculate_entropy(X)
+    H_X = calculate_entropy(X) + tol
     # ITPR(Y) over X
     max_itpr_value = 0.0
     for y_value in Y.unique():
