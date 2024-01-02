@@ -1,6 +1,6 @@
 # Information theoretic-based privacy risk evaluation for data anonymization
 
-Reproducing results of the [IPTR paper](https://www.semanticscholar.org/reader/6c2a30bd365c698f7913bd87922410c39e06c8fc).
+Reproducing results of the [ITPR paper](https://www.semanticscholar.org/reader/6c2a30bd365c698f7913bd87922410c39e06c8fc).
 
 ## Installation
 
