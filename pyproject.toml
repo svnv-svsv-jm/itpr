@@ -2,19 +2,16 @@
 name = "itpr"
 version = "0.1.0"
 description = "ITPR"
-authors = ["Gianmarco Aversano <gianmarco.aversano@euranova.eu>"]
+authors = ["Gianmarco Aversano <gianmarco.aversano@gmail.com>"]
 license = "LICENSE"
 readme = "README.md"
 packages = [{ include = "itpr", from = "src" }]
 include = ["*.py", "src/**/*.json", "src/**/*.toml"]
-exclude = ["test/*"]
+exclude = ["tests/*"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "cython"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.black]
-line-length = 110
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
@@ -32,8 +29,7 @@ pandas = "^2.1.2"
 numpy = "^1.26.1"
 
 [tool.poetry.dev-dependencies]
-tox = { version = "*" }
-tox-poetry = { version = "*" }
+virtualenv = { version = "*" }
 black = { extras = ["jupyter"], version = "*" }
 flake8 = { version = "*" }
 ipython = { version = "*" }
@@ -47,12 +43,14 @@ pytest-pylint = { version = "*" }
 pytest-mypy = { version = "*" }
 pytest-testmon = { version = "*" }
 pytest-xdist = { version = "*" }
-virtualenv = { version = "*" }
-msgpack = { version = "*" }
 nbmake = { version = "*" }
-nbstripout = { version = "*" }
+tox = { version = "*" }
+tox-poetry = { version = "*" }
 
 [[tool.poetry.source]]
 name = "pytorch"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
+
+[tool.black]
+line-length = 110

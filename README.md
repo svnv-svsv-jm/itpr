@@ -4,17 +4,29 @@ Reproducing results of the [ITPR paper](https://www.semanticscholar.org/reader/6
 
 ## Installation
 
-Run (in a virtual environment):
+To install the package `itpr`, git clone this repository, `cd` into it, and from its root directory, run (in a virtual environment):
 
 ```bash
 pip install --upgrade pip poetry
 poetry install
 ```
 
+or
+
+```bash
+make install
+```
+
 ## Development
 
-Source code is located in `src/`: [here](./src/iptr/__init__.py).
+Source code is located in `src/`: [here](./src/iptr/__init__.py). You can add code as you wish.
+
+To test, run the following command:
+
+```bash
+make tests
+```
 
 ## Usage
 
-See notebook: [here](./notebooks/IPTR.ipynb)
+See notebook: [here](./notebooks/ITPR.ipynb).
